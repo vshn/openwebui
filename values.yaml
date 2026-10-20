@@ -1,0 +1,28 @@
+openwebui:
+  enableOpenaiApi: true
+  openaiApiKey: ""
+  openaiBaseApiUrl: ""
+  openaiBaseApiUrls:
+    - "https://us-ai.corp.vshn.net/api"
+  openaiApiKeysExistingSecret: openwebui-pipeline-secrets
+  openaiApiKeysExistingSecretKey: OPENAI_API_KEYS
+  extraEnvVars:
+    - name: DATABASE_URL
+      valueFrom:
+        secretKeyRef:
+          name: openwebui-pipeline-secrets
+          key: DATABASE_URL
+  pipelines:
+    enabled: false
+  ollama:
+    enabled: false
+  websocket:
+    enabled: false
+  serviceAccount:
+    enable: false
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      acme.cert-manager.io/http01-edit-in-place: "true"
+    tls: true
