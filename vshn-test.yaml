@@ -1,5 +1,3 @@
 openwebui:
-  image:
-    tag: v0.11.4
   ingress:
     host: "test-openwebui.apps.c-managed-talos-lab-rma-0.vshnmanaged.net"
