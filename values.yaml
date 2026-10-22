@@ -12,6 +12,10 @@ openwebui:
         secretKeyRef:
           name: openwebui-pipeline-secrets
           key: DATABASE_URL
+    - name: ENABLE_OAUTH_GROUP_CREATION
+      value: "True"
+    - name: DEFAULT_USER_ROLE
+      value: "user"
   pipelines:
     enabled: false
   ollama:
@@ -26,3 +30,14 @@ openwebui:
       cert-manager.io/cluster-issuer: letsencrypt-production
       acme.cert-manager.io/http01-edit-in-place: "true"
     tls: true
+  sso:
+    enabled: true
+    enableSignup: true
+    enableGroupManagement: true
+    oidc:
+      enabled: true
+      clientExistingSecret: openwebui-pipeline-secrets
+      clientExistingSecretKey: SSO_CLIENT_KEY
+      clientIdExistingSecretKey: SSO_CLIENT_ID
+      providerUrl: https://id.vshn.net/auth/realms/vshn-realm/.well-known/openid-configuration
+      providerName: "VSHN IDP"
