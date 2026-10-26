@@ -1,0 +1,55 @@
+{{- if .Values.backup.enabled }}
+{{- $backend := .Values.backup.backend }}
+{{- $missing := list }}
+{{- range $key, $val := dict "endpoint" $backend.s3.endpoint "bucket" $backend.s3.bucket "existingSecret" $backend.existingSecret.name }}
+{{- if empty $val }}
+{{- $missing = append $missing $key }}
+{{- end }}
+{{- end }}
+{{- if $missing }}
+{{- fail (printf "backup.enabled is true but %s must be set under .Values.backup.backend" (join ", " $missing)) }}
+{{- end }}
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: {{ .Release.Name }}-backup
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}-backup
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  backend:
+    repoPasswordSecretRef:
+      name: {{ $backend.existingSecret.name }}
+      key: {{ $backend.existingSecret.repoPasswordKey }}
+    s3:
+      endpoint: {{ $backend.s3.endpoint | quote }}
+      bucket: {{ $backend.s3.bucket | quote }}
+      accessKeyIDSecretRef:
+        name: {{ $backend.existingSecret.name }}
+        key: {{ $backend.existingSecret.s3AccessKey }}
+      secretAccessKeySecretRef:
+        name: {{ $backend.existingSecret.name }}
+        key: {{ $backend.existingSecret.s3SecretKey }}
+  backup:
+    schedule: {{ .Values.backup.schedules.backup | quote }}
+    {{- if $backend.promUrl }}
+    promURL: {{ $backend.promUrl | quote }}
+    {{- end }}
+    {{- with .Values.backup.podOptions }}
+    podConfig:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- if .Values.backup.schedules.check }}
+  check:
+    schedule: {{ .Values.backup.schedules.check | quote }}
+    {{- if $backend.promUrl }}
+    promURL: {{ $backend.promUrl | quote }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.backup.schedules.prune }}
+  prune:
+    schedule: {{ .Values.backup.schedules.prune | quote }}
+    retention:
+      {{- toYaml .Values.backup.schedules.retention | nindent 6 }}
+  {{- end }}
+{{- end }}

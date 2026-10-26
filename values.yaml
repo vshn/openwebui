@@ -1,3 +1,24 @@
+backup:
+  enabled: false
+  backend:
+    existingSecret:
+      name: openwebui-pipeline-secrets
+      repoPasswordKey: K8UP_REPO_PASSWORD
+      s3AccessKey: K8UP_ACCESS_KEY
+      s3SecretKey: K8UP_SECRET_KEY
+    s3:
+      endpoint: ""
+      bucket: ""
+    promUrl: "http://platform-prometheus-pushgateway.syn-prometheus-pushgateway.svc:9091"
+  schedules:
+    backup: "0 1 * * *"
+    check: "0 5 * * 0"
+    prune: "0 3 * * 0"
+    retention:
+      keepLast: 7
+      keepDaily: 14
+  podOptions: {}
+
 openwebui:
   enableOpenaiApi: true
   openaiApiKey: ""

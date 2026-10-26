@@ -1,3 +1,9 @@
+backup:
+  enabled: true
+  backend:
+    s3:
+      endpoint: objects.lpg.cloudscale.ch
+      bucket: 8c0270f9060e036e2bf2bb328040f21e
 openwebui:
   ingress:
     host: "test-openwebui.apps.c-managed-talos-lab-rma-0.vshnmanaged.net"
