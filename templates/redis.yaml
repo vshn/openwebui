@@ -1,5 +1,5 @@
 {{- if .Values.env.HIGH_AVAILABLE }}
-apiVersion: v0.helmeticaredis.helmetica-bundles.io
+apiVersion: v0.helmeticaredis.helmetica-bundles.io/bundle
 kind: HelmeticaRedis
 metadata:
   name: {{ .Release.Name }}-redis
