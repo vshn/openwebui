@@ -18,7 +18,6 @@ backup:
       keepLast: 7
       keepDaily: 14
   podOptions: {}
-
 openwebui:
   enableOpenaiApi: true
   openaiApiKey: ""

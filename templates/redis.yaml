@@ -1,0 +1,22 @@
+{{- if .Values.env.HIGH_AVAILABLE }}
+apiVersion: v0.helmeticaredis.helmetica-bundles.io
+kind: HelmeticaRedis
+metadata:
+  name: {{ .Release.Name }}-redis
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}-redis
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  approval:
+    strategy: Automatic
+  credentials:
+    targetSecret: {{ include "vshnopenwebui.redis.targetSecret" . }}
+  version: v0.0.12
+  values:
+    backup:
+      enabled: false
+    service:
+      plan: standard-1
+      replicas: 3
+      storage: 1Gi
+{{- end }}
