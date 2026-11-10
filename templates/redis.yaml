@@ -17,6 +17,6 @@ spec:
       targetSecret: {{ include "vshnopenwebui.redis.targetSecret" . }}
     service:
       plan: standard-1
-      replicas: 3
+      replicas: 1
       storage: 1Gi
 {{- end }}
