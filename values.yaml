@@ -61,3 +61,5 @@ openwebui:
       clientIdExistingSecretKey: SSO_CLIENT_ID
       providerUrl: https://id.vshn.net/auth/realms/vshn-realm/.well-known/openid-configuration
       providerName: "VSHN IDP"
+redis:
+
