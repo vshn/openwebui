@@ -9,12 +9,12 @@ metadata:
 spec:
   approval:
     strategy: Automatic
-  credentials:
-    targetSecret: {{ include "vshnopenwebui.redis.targetSecret" . }}
   version: v0.0.12
   values:
     backup:
       enabled: false
+    credentials:
+      targetSecret: {{ include "vshnopenwebui.redis.targetSecret" . }}
     service:
       plan: standard-1
       replicas: 3
